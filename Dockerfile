@@ -1,6 +1,8 @@
 # Stage 1: Build the Go binaries
-# Use Go 1.23 which satisfies the minimum version required by dependencies
 FROM golang:1.23-alpine AS builder
+
+# Allow Go to automatically download a newer toolchain if required by go.mod
+ENV GOTOOLCHAIN=auto
 
 WORKDIR /app
 
@@ -10,6 +12,9 @@ RUN go mod download
 
 # Copy the source code
 COPY . .
+
+# Tidy modules to ensure go.mod and go.sum are consistent with the toolchain
+RUN go mod tidy
 
 # Build the server and client as static binaries
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /server ./cmd/server

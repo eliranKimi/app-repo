@@ -1,6 +1,6 @@
 # Stage 1: Build the Go binaries
-# Use Go 1.22 which satisfies the go.mod minimum version requirement
-FROM golang:1.22-alpine AS builder
+# Use Go 1.23 which satisfies the minimum version required by dependencies
+FROM golang:1.23-alpine AS builder
 
 WORKDIR /app
 
